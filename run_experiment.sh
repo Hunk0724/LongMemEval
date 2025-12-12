@@ -64,6 +64,7 @@ show_usage() {
   --skip-retrieval         跳過檢索步驟
   --skip-generation        跳過生成步驟
   --skip-evaluation        跳過評估步驟
+  --resume                 啟用斷點續傳（生成階段會跳過已處理的問題）
 
   -h, --help               顯示此幫助信息
 
@@ -101,6 +102,7 @@ EVAL_MODEL="gpt-4o-mini"
 SKIP_RETRIEVAL=false
 SKIP_GENERATION=false
 SKIP_EVALUATION=false
+RESUME=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -117,6 +119,7 @@ while [[ $# -gt 0 ]]; do
         --skip-retrieval) SKIP_RETRIEVAL=true; shift ;;
         --skip-generation) SKIP_GENERATION=true; shift ;;
         --skip-evaluation) SKIP_EVALUATION=true; shift ;;
+        --resume) RESUME=true; shift ;;
         -h|--help) show_usage; exit 0 ;;
         *) echo_error "未知參數: $1"; show_usage; exit 1 ;;
     esac
@@ -229,11 +232,16 @@ if [ "$METHOD" = "rag" ]; then
     echo "Index Expansion: $EXPANSION"
     echo "Top-K: $TOPK"
 fi
-echo "閱讀方法: $READING"
-echo "生成模型: $MODEL"
-echo "評估模型: $EVAL_MODEL"
-echo_info "=========================================="
-echo ""
+    echo "閱讀方法: $READING"
+    echo "生成模型: $MODEL"
+    echo "評估模型: $EVAL_MODEL"
+    if [ "$RESUME" = true ]; then
+        echo "斷點續傳: 啟用（將跳過已處理的問題）"
+    else
+        echo "斷點續傳: 關閉（將覆蓋已存在的檔案）"
+    fi
+    echo_info "=========================================="
+    echo ""
 
 # ============================================
 # 環境檢查
@@ -389,6 +397,12 @@ run_generation() {
     
     cd ${HOME_DIR}/src/generation
     
+    RESUME_FLAG=""
+    if [ "$RESUME" = true ]; then
+        RESUME_FLAG="--resume"
+        echo_info "啟用斷點續傳模式"
+    fi
+    
     python3 run_generation.py \
         --in_file "$INPUT_FILE" \
         --out_dir "$OUT_DIR" \
@@ -402,7 +416,9 @@ run_generation() {
         --useronly false \
         --cot "$COT" \
         --con "$CON" \
-        --merge_key_expansion_into_value none
+        --merge_key_expansion_into_value none \
+        $RESUME_FLAG \
+        $RESUME_FLAG
     
     echo ""
 }
@@ -439,7 +455,7 @@ run_evaluation() {
     if [ -f "$LOG_FILE" ]; then
         echo ""
         echo_info "結果:"
-        python3 print_qa_metrics.py "$EVAL_MODEL" "$LOG_FILE" "$DATA_FILE"
+        python3 print_qa_metrics.py "$LOG_FILE" "$DATA_FILE"
     fi
     
     echo ""

@@ -10,17 +10,10 @@ from torch.utils.data import DataLoader
 import argparse
 from rank_bm25 import BM25Okapi
 from sentence_transformers import SentenceTransformer, util
-from openai import OpenAI
 from transformers import AutoModel, AutoTokenizer
 from sklearn.preprocessing import normalize
 from src.retrieval.eval_utils import evaluate_retrieval, evaluate_retrieval_turn2session
 from src.retrieval.index_expansion_utils import fetch_expansion_from_cache, resolve_expansion
-
-
-client = OpenAI(
-    api_key="empty",
-    base_url="http://localhost:8001/v1",
-)
 
 
 def parse_args():
@@ -81,7 +74,7 @@ class DenseRetrievalMaster:
             self.retriever_model = (tokenizer, model)
 
         elif self.args.retriever == 'flat-stella':
-            model_dir = self.args.cache_dir + "/dunzhang_stella_en_1.5B_v5"
+            model_dir = self.args.cache_dir + "/stella_en_1.5B_v5"
             vector_dim = 1024
             vector_linear_directory = f"2_Dense_{vector_dim}"
             model = AutoModel.from_pretrained(model_dir, trust_remote_code=True).to(self.device)

@@ -1,8 +1,8 @@
 import sys
+import os
 import json
 import numpy as np
 from tqdm import tqdm
-from openai import OpenAI
 import openai
 import backoff
 from src.retrieval.eval_utils import evaluate_retrieval
@@ -20,17 +20,16 @@ def increment_date(date_str, x):
     return new_date.strftime("%Y/%m/%d")
 
 
-@backoff.on_exception(backoff.constant, (openai.RateLimitError), 
+@backoff.on_exception(backoff.constant, (openai.error.RateLimitError,), 
                       interval=5)
-def chat_completions_with_backoff(client, **kwargs):
-    return client.chat.completions.create(**kwargs)
+def chat_completions_with_backoff(**kwargs):
+    return openai.ChatCompletion.create(**kwargs)
 
 
-openai.organization="YOUR_ORGANZATION"
-client = OpenAI(
-    api_key="YOUR_API_KEY",
-    base_url=None,
-)
+# 從環境變數讀取 API 設定
+openai.api_key = os.getenv("OPENAI_API_KEY", "YOUR_API_KEY")
+if os.getenv("OPENAI_ORGANIZATION"):
+    openai.organization = os.getenv("OPENAI_ORGANIZATION")
 
 
 model = 'gpt-4o'
@@ -70,9 +69,9 @@ def infer_time_range(query, query_date):
         'temperature': 0,
         'max_tokens': 2000
     }
-    completion = chat_completions_with_backoff(client,**kwargs)
+    completion = chat_completions_with_backoff(**kwargs)
     try:
-        out_string = completion.choices[0].message.content.strip()
+        out_string = completion.choices[0].message['content'].strip()
         out_string = out_string.replace('```json', '')
         out_string = out_string.replace('```', '').strip()
         out_data = json.loads(out_string.strip())
@@ -85,7 +84,14 @@ def infer_time_range(query, query_date):
 
 
 if __name__ == '__main__':
-    in_data_with_timestamp = json.load(sys.argv[1])
+    if len(sys.argv) != 4:
+        print("Usage: python temp_query_search_pruning.py TIMESTAMP_EVENT_FILE RETRIEVAL_LOG GRANULARITY")
+        print("  TIMESTAMP_EVENT_FILE: Path to timestamped events JSON file")
+        print("  RETRIEVAL_LOG: Path to retrieval results JSONL file")
+        print("  GRANULARITY: 'session' or 'turn'")
+        sys.exit(1)
+    
+    in_data_with_timestamp = json.load(open(sys.argv[1]))
     in_retrieval_file = sys.argv[2]
     granularity = sys.argv[3]  # session turn
     id2timestamp = {x['question_id']: x['timestamped_facts'] for x in in_data_with_timestamp}

@@ -1,8 +1,9 @@
 import sys
 import json
+import os
+import glob
 from tqdm import tqdm
 import openai
-from openai import OpenAI
 import backoff
 import random
 import numpy as np
@@ -17,6 +18,8 @@ def parse_args():
     parser.add_argument('--in_file', type=str, required=True)
     parser.add_argument('--out_dir', type=str, required=True)
     parser.add_argument('--out_file_suffix', type=str, default="")
+    parser.add_argument('--resume', action='store_true', 
+                       help='啟用斷點續傳：如果輸出檔案已存在，將跳過已處理的問題')
         
     parser.add_argument('--model_name', type=str, required=True)
     parser.add_argument('--model_alias', type=str, required=True)
@@ -43,7 +46,7 @@ def check_args(args):
     print(args)
 
 
-def prepare_prompt(entry, retriever_type, topk_context: int, useronly: bool, history_format: str, cot: bool, tokenizer, tokenizer_backend, max_retrieval_length, merge_key_expansion_into_value, con=False, con_client=None, con_model=None):    
+def prepare_prompt(entry, retriever_type, topk_context: int, useronly: bool, history_format: str, cot: bool, tokenizer, tokenizer_backend, max_retrieval_length, merge_key_expansion_into_value, con=False, con_model=None):    
     if retriever_type == 'no-retrieval':
         answer_prompt_template = '{}'
         if cot:
@@ -210,8 +213,8 @@ def prepare_prompt(entry, retriever_type, topk_context: int, useronly: bool, his
                 'temperature': 0,
                 'max_tokens': 500,
             }
-            completion = chat_completions_with_backoff(con_client, **kwargs) 
-            cur_note = completion.choices[0].message.content.strip()
+            completion = chat_completions_with_backoff(**kwargs) 
+            cur_note = completion.choices[0].message['content'].strip()
             chunk_entry_con = {'session_summary': cur_note}
 
             if merge_key_expansion_into_value == 'merge':
@@ -282,20 +285,19 @@ def prepare_prompt(entry, retriever_type, topk_context: int, useronly: bool, his
     return prompt
     
 
-@backoff.on_exception(backoff.constant, (openai.RateLimitError), 
+@backoff.on_exception(backoff.constant, (openai.error.RateLimitError,), 
                       interval=5)
-def chat_completions_with_backoff(client, **kwargs):
-    return client.chat.completions.create(**kwargs)
+def chat_completions_with_backoff(**kwargs):
+    return openai.ChatCompletion.create(**kwargs)
 
 
 def main(args):
     # setup
+    openai.api_key = args.openai_key
+    if args.openai_base_url:
+        openai.api_base = args.openai_base_url
     if args.openai_organization:
         openai.organization = args.openai_organization
-    client = OpenAI(
-        api_key=args.openai_key,
-        base_url=args.openai_base_url,
-    )
 
     try:
         in_data = json.load(open(args.in_file))
@@ -303,13 +305,68 @@ def main(args):
         in_data = [json.loads(line) for line in open(args.in_file).readlines()]
 
     in_file_tmp = args.in_file.split('/')[-1]
-    if args.merge_key_expansion_into_value is not None and args.merge_key_expansion_into_value != 'none':
-        out_file = args.out_dir + '/' + in_file_tmp + '_testlog_top{}context_{}format_useronly{}_factexpansion{}_{}'.format(args.topk_context, args.history_format, args.useronly, args.merge_key_expansion_into_value, datetime.now().strftime("%Y%m%d-%H%M"))
+    # 如果啟用斷點續傳，使用固定檔名（不含時間戳）；否則使用時間戳
+    if args.resume:
+        # 斷點續傳模式：使用固定檔名，嘗試找到已存在的檔案
+        if args.merge_key_expansion_into_value is not None and args.merge_key_expansion_into_value != 'none':
+            out_file_base = args.out_dir + '/' + in_file_tmp + '_testlog_top{}context_{}format_useronly{}_factexpansion{}'.format(args.topk_context, args.history_format, args.useronly, args.merge_key_expansion_into_value)
+        else:
+            out_file_base = args.out_dir + '/' + in_file_tmp + '_testlog_top{}context_{}format_useronly{}'.format(args.topk_context, args.history_format, args.useronly)
+        if args.out_file_suffix.strip() != "":
+            out_file_base += args.out_file_suffix
+        
+        # 尋找已存在的檔案（可能有多個，取最新的）
+        existing_files = glob.glob(out_file_base + '_*.jsonl')
+        if existing_files:
+            # 找到已存在的檔案，使用它
+            out_file = max(existing_files, key=os.path.getmtime)
+            print(f"斷點續傳模式：使用已存在的檔案 {out_file}")
+        else:
+            # 沒有找到，創建新的（加上時間戳）
+            out_file = out_file_base + '_' + datetime.now().strftime("%Y%m%d-%H%M") + '.jsonl'
     else:
-        out_file = args.out_dir + '/' + in_file_tmp + '_testlog_top{}context_{}format_useronly{}_{}'.format(args.topk_context, args.history_format, args.useronly, datetime.now().strftime("%Y%m%d-%H%M"))
-    if args.out_file_suffix.strip() != "":
-        out_file += args.out_file_suffix
-    out_f = open(out_file, 'w')
+        # 正常模式：使用時間戳
+        if args.merge_key_expansion_into_value is not None and args.merge_key_expansion_into_value != 'none':
+            out_file = args.out_dir + '/' + in_file_tmp + '_testlog_top{}context_{}format_useronly{}_factexpansion{}_{}.jsonl'.format(args.topk_context, args.history_format, args.useronly, args.merge_key_expansion_into_value, datetime.now().strftime("%Y%m%d-%H%M"))
+        else:
+            out_file = args.out_dir + '/' + in_file_tmp + '_testlog_top{}context_{}format_useronly{}_{}.jsonl'.format(args.topk_context, args.history_format, args.useronly, datetime.now().strftime("%Y%m%d-%H%M"))
+        if args.out_file_suffix.strip() != "":
+            out_file = out_file.replace('.jsonl', '') + args.out_file_suffix + '.jsonl'
+    
+    # 斷點續傳：檢查已處理的問題
+    processed_question_ids = set()
+    if args.resume and os.path.exists(out_file):
+        print(f"發現已存在的輸出檔案: {out_file}")
+        print("正在讀取已處理的問題...")
+        try:
+            with open(out_file, 'r') as f:
+                for line in f:
+                    try:
+                        entry = json.loads(line.strip())
+                        if 'question_id' in entry:
+                            processed_question_ids.add(entry['question_id'])
+                    except:
+                        continue
+            print(f"已找到 {len(processed_question_ids)} 個已處理的問題，將跳過這些問題")
+        except Exception as e:
+            print(f"讀取已處理問題時發生錯誤: {e}，將重新開始")
+            processed_question_ids = set()
+    elif os.path.exists(out_file) and not args.resume:
+        print(f"警告: 輸出檔案已存在: {out_file}")
+        print("如果希望斷點續傳，請使用 --resume 參數")
+        print("否則將覆蓋現有檔案")
+        response = input("是否繼續？(y/n): ")
+        if response.lower() != 'y':
+            print("已取消")
+            sys.exit(0)
+        processed_question_ids = set()
+    
+    # 以追加模式開啟檔案（如果已存在且有已處理的問題）或寫入模式（如果不存在）
+    if len(processed_question_ids) > 0:
+        out_f = open(out_file, 'a')
+        print(f"以追加模式開啟檔案，將從問題 {len(processed_question_ids) + 1} 開始")
+    else:
+        out_f = open(out_file, 'w')
 
     # inference
     model2maxlength = {
@@ -317,6 +374,7 @@ def main(args):
         'gpt-4o-2024-08-06': 128000,
         "gpt-4o-mini-2024-07-18": 128000,
         'meta-llama/Meta-Llama-3.1-8B-Instruct': 128000,
+        'llama3.1:8b-128k': 128000,  # Ollama 模型
         'meta-llama/Meta-Llama-3.1-70B-Instruct': 128000,
         'microsoft/Phi-3-medium-128k-instruct': 120000,
         'microsoft/Phi-3.5-mini-instruct': 120000,
@@ -325,16 +383,35 @@ def main(args):
         'mistral-7b-instruct-v0.3': 32000,
         'In2Training/FILM-7B': 32000,
     }
-    model_max_length = model2maxlength[args.model_name]
-    if 'gpt-4' in args.model_name.lower()  or 'gpt-3.5' in args.model_name.lower():
+    model_max_length = model2maxlength.get(args.model_name, 128000)  # 預設 128k
+    
+    # 判斷 tokenizer 類型
+    if 'gpt-4' in args.model_name.lower() or 'gpt-3.5' in args.model_name.lower():
         tokenizer = tiktoken.get_encoding('o200k_base')
         tokenizer_backend = 'openai'
+    elif ':' in args.model_name:
+        # Ollama 模型格式（如 llama3.1:8b-128k）
+        # 使用對應的 HuggingFace 模型作為 tokenizer
+        if 'llama3.1' in args.model_name.lower():
+            tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3.1-8B-Instruct')
+        elif 'llama3' in args.model_name.lower():
+            tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
+        else:
+            # 預設使用 Llama 3.1 tokenizer
+            tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3.1-8B-Instruct')
+        tokenizer_backend = 'huggingface'
     else:
         tokenizer = AutoTokenizer.from_pretrained(args.model_name)
         tokenizer_backend = 'huggingface'
 
     total_prompt_tokens, total_completion_tokens = 0, 0
-    for entry in tqdm(in_data):
+    skipped_count = 0
+    
+    for entry in tqdm(in_data, desc="生成答案"):
+        # 斷點續傳：跳過已處理的問題
+        if entry['question_id'] in processed_question_ids:
+            skipped_count += 1
+            continue
 
         # Ttruncate the retrieval part of the prompt such that the context length never exceeds
         gen_length = args.gen_length
@@ -347,7 +424,7 @@ def main(args):
                                     args.history_format, args.cot=='true', 
                                     tokenizer=tokenizer, tokenizer_backend=tokenizer_backend, max_retrieval_length=max_retrieval_length,
                                     merge_key_expansion_into_value=args.merge_key_expansion_into_value,
-                                    con=True, con_client=client, con_model=args.model_name)
+                                    con=True, con_model=args.model_name)
         else:
             prompt = prepare_prompt(entry, args.retriever_type, args.topk_context, args.useronly=='true',
                                     args.history_format, args.cot=='true', 
@@ -366,20 +443,63 @@ def main(args):
                 'temperature': 0,
                 'max_tokens': gen_length,
             }
-            completion = chat_completions_with_backoff(client,**kwargs) 
-            answer = completion.choices[0].message.content.strip()
+            completion = chat_completions_with_backoff(**kwargs) 
+            answer = completion.choices[0].message['content'].strip()
 
-            total_prompt_tokens += completion.usage.prompt_tokens
-            total_completion_tokens += completion.usage.completion_tokens
+            # 提取 tokens 資訊
+            prompt_tokens = completion.usage.get('prompt_tokens', 0)
+            completion_tokens = completion.usage.get('completion_tokens', 0)
+            total_tokens = completion.usage.get('total_tokens', prompt_tokens + completion_tokens)
+            
+            # 計算 prompt 的實際 token 長度（用於分析文本長度）
+            if tokenizer_backend == 'openai':
+                prompt_token_count = len(tokenizer.encode(prompt, allowed_special={'<|endoftext|>'}))
+            else:
+                prompt_token_count = len(tokenizer.encode(prompt, add_special_tokens=False))
+            
+            total_prompt_tokens += prompt_tokens
+            total_completion_tokens += completion_tokens
+            
+            # 記錄詳細的 tokens / usage 資訊到輸出
+            output_entry = {
+                'question_id': entry['question_id'],
+                'hypothesis': answer,
+                'usage': {
+                    'prompt_tokens': prompt_tokens,
+                    'completion_tokens': completion_tokens,
+                    'total_tokens': total_tokens,
+                },
+                'tokens': {
+                    'prompt_tokens': prompt_tokens,  # API 回傳的 prompt tokens
+                    'completion_tokens': completion_tokens,
+                    'total_tokens': total_tokens,
+                    'prompt_token_count': prompt_token_count  # 實際計算的 prompt token 數（用於分析）
+                }
+            }
+            
             print(json.dumps({'hypothesis': answer}), flush=True)
-            print(json.dumps({'question_id': entry['question_id'], 'hypothesis': answer}), file=out_f, flush=True)
+            print(json.dumps(output_entry), file=out_f, flush=True)
         except Exception as e:
             print('One exception captured', repr(e))
             continue
 
-    print('Total prompt tokens:', total_prompt_tokens)
-    print('Total completion tokens:', total_completion_tokens)
     out_f.close()
+    
+    print('')
+    print('=' * 60)
+    print('生成完成統計')
+    print('=' * 60)
+    print(f'總問題數: {len(in_data)}')
+    print(f'跳過問題數: {skipped_count}')
+    print(f'處理問題數: {len(in_data) - skipped_count}')
+    print(f'總 Prompt Tokens: {total_prompt_tokens:,}')
+    print(f'總 Completion Tokens: {total_completion_tokens:,}')
+    print(f'總 Tokens: {total_prompt_tokens + total_completion_tokens:,}')
+    if len(in_data) - skipped_count > 0:
+        print(f'平均 Prompt Tokens/問題: {total_prompt_tokens / (len(in_data) - skipped_count):.1f}')
+        print(f'平均 Completion Tokens/問題: {total_completion_tokens / (len(in_data) - skipped_count):.1f}')
+    print(f'輸出檔案: {out_file}')
+    print('=' * 60)
     
 
 if __name__ == '__main__':

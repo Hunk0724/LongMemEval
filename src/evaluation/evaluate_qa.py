@@ -4,7 +4,6 @@ import json
 from tqdm import tqdm
 import backoff
 import openai
-from openai import OpenAI
 import numpy as np
 
 
@@ -15,10 +14,10 @@ model_zoo = {
 }
 
 
-@backoff.on_exception(backoff.expo, (openai.RateLimitError,
-                                    openai.APIError))
-def chat_completions_with_backoff(client, **kwargs):
-    return client.chat.completions.create(**kwargs)
+@backoff.on_exception(backoff.expo, (openai.error.RateLimitError,
+                                    openai.error.APIError))
+def chat_completions_with_backoff(**kwargs):
+    return openai.ChatCompletion.create(**kwargs)
 
 
 def get_anscheck_prompt(task, question, answer, response, abstention=False):
@@ -61,16 +60,10 @@ if __name__ == '__main__':
     metric_model, metric_model_source = model_zoo[metric_model_short]
     if metric_model_source == 'openai':
         openai.organization = os.getenv('OPENAI_ORGANIZATION')
-        openai_api_key = os.getenv('OPENAI_API_KEY')
-        openai_api_base = None
+        openai.api_key = os.getenv('OPENAI_API_KEY')
     else:
-        openai_api_key = "EMPTY"
-        openai_api_base = "http://localhost:8001/v1"
-    
-    metric_client = OpenAI(
-        api_key=openai_api_key,
-        base_url=openai_api_base,
-    )
+        openai.api_key = "EMPTY"
+        openai.api_base = "http://localhost:8001/v1"
 
     try:
         hypotheses = [json.loads(line) for line in open(hyp_file).readlines()]
@@ -85,12 +78,57 @@ if __name__ == '__main__':
     qtypes = set(list(qid2qtype.values()))
     qtype2acc = {t: [] for t in qtypes}
 
-    with open(result_file, 'w') as out_f:
+    # 斷點續傳：檢查已處理的問題
+    processed_question_ids = set()
+    if os.path.exists(result_file):
+        print(f"發現已存在的評估結果檔案: {result_file}")
+        print("正在讀取已處理的問題...")
+        try:
+            with open(result_file, 'r') as f:
+                for line in f:
+                    try:
+                        entry = json.loads(line.strip())
+                        if 'question_id' in entry:
+                            processed_question_ids.add(entry['question_id'])
+                            # 如果已有評估結果，也記錄到 qtype2acc
+                            if entry.get('autoeval_label', {}).get('label'):
+                                qtype = qid2qtype.get(entry['question_id'])
+                                if qtype:
+                                    qtype2acc[qtype].append(1)
+                            else:
+                                qtype = qid2qtype.get(entry['question_id'])
+                                if qtype:
+                                    qtype2acc[qtype].append(0)
+                    except:
+                        continue
+            print(f"已找到 {len(processed_question_ids)} 個已處理的問題，將跳過這些問題")
+        except Exception as e:
+            print(f"讀取已處理問題時發生錯誤: {e}，將重新開始")
+            processed_question_ids = set()
+            qtype2acc = {t: [] for t in qtypes}
+
+    # 以追加模式開啟檔案（如果已存在且有已處理的問題）或寫入模式（如果不存在）
+    if len(processed_question_ids) > 0:
+        out_f = open(result_file, 'a')
+        print(f"以追加模式開啟檔案，將從問題 {len(processed_question_ids) + 1} 開始")
+    else:
+        out_f = open(result_file, 'w')
+    
+    total_eval_prompt_tokens = 0
+    total_eval_completion_tokens = 0
+    skipped_count = 0
+
+    with out_f:
         logs = []
-        for entry in tqdm(hypotheses):
+        for entry in tqdm(hypotheses, desc="評估答案"):
 
             if entry['question_id'] not in qid2qtype:
                 print('Warning: skipping {} as it is not in reference data.'.format(entry['question_id']))
+                continue
+            
+            # 跳過已處理的問題
+            if entry['question_id'] in processed_question_ids:
+                skipped_count += 1
                 continue
             
             qtype = qid2qtype[entry['question_id']]
@@ -108,13 +146,29 @@ if __name__ == '__main__':
                 'temperature': 0,
                 'max_tokens': 10
             }
-            completion = chat_completions_with_backoff(metric_client, **kwargs)
-            eval_response = completion.choices[0].message.content.strip()
+            completion = chat_completions_with_backoff(**kwargs)
+            eval_response = completion.choices[0].message['content'].strip()
             label = 'yes' in eval_response.lower()
+            
+            # 提取 token 資訊
+            eval_prompt_tokens = completion.usage.get('prompt_tokens', 0)
+            eval_completion_tokens = completion.usage.get('completion_tokens', 0)
+            eval_total_tokens = completion.usage.get('total_tokens', eval_prompt_tokens + eval_completion_tokens)
+            
+            total_eval_prompt_tokens += eval_prompt_tokens
+            total_eval_completion_tokens += eval_completion_tokens
+            
             entry['autoeval_label'] = {
                 'model': metric_model,
                 'label': label
             }
+            # 記錄評估階段的 token 資訊
+            if 'tokens' not in entry:
+                entry['tokens'] = {}
+            entry['tokens']['eval_prompt_tokens'] = eval_prompt_tokens
+            entry['tokens']['eval_completion_tokens'] = eval_completion_tokens
+            entry['tokens']['eval_total_tokens'] = eval_total_tokens
+            
             logs.append(entry)
             if verbose:
                 print(json.dumps({
@@ -123,12 +177,30 @@ if __name__ == '__main__':
                     'hypothesis': hyp,
                     'autoeval_label': label
                 }, indent=4), flush=True)
-            print(json.dumps(entry), file=out_f)
+            print(json.dumps(entry), file=out_f, flush=True)
             qtype2acc[qid2qtype[entry['question_id']]].append(1 if label else 0)
+            processed_question_ids.add(entry['question_id'])  # 記錄已處理
 
             
-    print('Accuracy:', round(np.mean([1 if x['autoeval_label']['label'] else 0 for x in logs]).item(), 4))
+    print('')
+    print('=' * 60)
+    print('評估完成統計')
+    print('=' * 60)
+    print(f'總問題數: {len(hypotheses)}')
+    print(f'跳過問題數: {skipped_count}')
+    print(f'處理問題數: {len(hypotheses) - skipped_count}')
+    print('')
+    print('準確率:')
+    print('  整體:', round(np.mean([1 if x['autoeval_label']['label'] else 0 for x in logs]).item(), 4))
     for k,v in qtype2acc.items():
-        print('\t{}: {} ({})'.format(k, round(np.mean(v), 4), len(v)))
-
-    print('Saved to', result_file)
+        if len(v) > 0:
+            print('\t{}: {} ({})'.format(k, round(np.mean(v), 4), len(v)))
+    print('')
+    print('Token 使用:')
+    print(f'  總 Eval Prompt Tokens: {total_eval_prompt_tokens:,}')
+    print(f'  總 Eval Completion Tokens: {total_eval_completion_tokens:,}')
+    print(f'  總 Eval Tokens: {total_eval_prompt_tokens + total_eval_completion_tokens:,}')
+    if len(hypotheses) - skipped_count > 0:
+        print(f'  平均 Eval Tokens/問題: {(total_eval_prompt_tokens + total_eval_completion_tokens) / (len(hypotheses) - skipped_count):.1f}')
+    print('=' * 60)
+    print('結果已儲存至:', result_file)
