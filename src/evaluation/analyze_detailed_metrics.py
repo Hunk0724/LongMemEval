@@ -28,7 +28,7 @@ def calculate_recall(retrieval_results, answer_session_ids, k=10):
     return recall
 
 
-def analyze(hypo_file, ref_file, retrieval_file=None, output_dir="."):
+def analyze(hypo_file, ref_file, retrieval_file=None, output_dir=".", generation_file=None):
     """
     分析實驗結果，包含 Recall、位置偏差、證據數量等
     
@@ -37,6 +37,7 @@ def analyze(hypo_file, ref_file, retrieval_file=None, output_dir="."):
         ref_file: 參考答案檔案
         retrieval_file: 檢索結果檔案（可選，用於計算 Recall）
         output_dir: 圖表輸出目錄
+        generation_file: 生成檔案（可選，用於讀取 tokens 資訊）
     """
     os.makedirs(output_dir, exist_ok=True)
     
@@ -56,6 +57,21 @@ def analyze(hypo_file, ref_file, retrieval_file=None, output_dir="."):
     
     ref_data = json.load(open(ref_file))
     ref_map = {x['question_id']: x for x in ref_data}
+    
+    # 載入生成檔案以獲取 tokens 資訊（如果提供）
+    generation_map = {}
+    if generation_file:
+        try:
+            generation_data = [json.loads(line) for line in open(generation_file)]
+            generation_map = {x['question_id']: x for x in generation_data}
+            print_and_log(f"✓ 載入生成檔案: {len(generation_map)} 個問題")
+        except:
+            print_and_log(f"Warning: 無法載入生成檔案 {generation_file}")
+    else:
+        # 如果沒有提供 generation_file，嘗試從 hypo_file 中讀取（可能是同一個檔案）
+        for p in preds:
+            if 'tokens' in p or 'usage' in p:
+                generation_map[p['question_id']] = p
     
     # 載入檢索結果（如果提供）
     retrieval_map = {}
@@ -109,6 +125,20 @@ def analyze(hypo_file, ref_file, retrieval_file=None, output_dir="."):
             recall_10 = calculate_recall(retrieval_results, evidence_ids, k=10)
             recall_50 = calculate_recall(retrieval_results, evidence_ids, k=50)
         
+        # 6. 獲取 tokens 資訊（如果有）
+        prompt_tokens = np.nan
+        total_tokens = np.nan
+        if qid in generation_map:
+            gen_entry = generation_map[qid]
+            # 優先使用 tokens 欄位，其次使用 usage 欄位
+            if 'tokens' in gen_entry:
+                prompt_tokens = gen_entry['tokens'].get('prompt_token_count', 
+                                gen_entry['tokens'].get('prompt_tokens', np.nan))
+                total_tokens = gen_entry['tokens'].get('total_tokens', np.nan)
+            elif 'usage' in gen_entry:
+                prompt_tokens = gen_entry['usage'].get('prompt_tokens', np.nan)
+                total_tokens = gen_entry['usage'].get('total_tokens', np.nan)
+        
         stats.append({
             'question_id': qid,
             'question_type': ref['question_type'],
@@ -120,7 +150,9 @@ def analyze(hypo_file, ref_file, retrieval_file=None, output_dir="."):
             'history_len': history_len,
             'recall@5': recall_5,
             'recall@10': recall_10,
-            'recall@50': recall_50
+            'recall@50': recall_50,
+            'prompt_tokens': prompt_tokens,
+            'total_tokens': total_tokens
         })
     
     df = pd.DataFrame(stats)
@@ -276,9 +308,88 @@ def analyze(hypo_file, ref_file, retrieval_file=None, output_dir="."):
         plt.savefig(os.path.join(output_dir, "position_bias_single_evidence.png"))
         print_and_log(f"\n✓ 圖表已儲存: {output_dir}/position_bias_single_evidence.png")
     
-    # ===== Multi-Evidence 分析 =====
+    # ===== Single-Evidence vs Multi-Evidence 按問題類型分析 =====
     print_and_log("\n" + "="*80)
-    print_and_log("=== [4] Multi-Evidence 分析 ===")
+    print_and_log("=== [4] Single-Evidence vs Multi-Evidence 按問題類型分析 ===")
+    print_and_log("="*80)
+    
+    # 加入 evidence_category 欄位
+    df['evidence_category'] = df['evidence_count'].apply(lambda x: 'Single' if x == 1 else 'Multi')
+    
+    print_and_log("\n[4.1] 整體分布")
+    category_dist = df.groupby('evidence_category').size()
+    print_and_log(f"Single-Evidence: {category_dist.get('Single', 0)} 題")
+    print_and_log(f"Multi-Evidence:  {category_dist.get('Multi', 0)} 題")
+    
+    print_and_log("\n[4.2] 按問題類型和證據數量分解的準確率")
+    category_type_stats = df.groupby(['evidence_category', 'question_type']).agg({
+        'is_correct': ['mean', 'count'],
+        'recall@10': 'mean' if retrieval_file else lambda x: 0,
+        'prompt_tokens': 'mean' if df['prompt_tokens'].notna().sum() > 0 else lambda x: np.nan
+    }).round(4)
+    print_and_log(str(category_type_stats))
+    
+    # ===== Tokens 分析（如果有資料）=====
+    if df['prompt_tokens'].notna().sum() > 0:
+        print_and_log("\n" + "="*80)
+        print_and_log("=== [5] Input Tokens 分析 ===")
+        print_and_log("="*80)
+        
+        print_and_log(f"\n[5.1] 整體統計")
+        print_and_log(f"平均 Prompt Tokens: {df['prompt_tokens'].mean():.0f}")
+        print_and_log(f"中位數 Prompt Tokens: {df['prompt_tokens'].median():.0f}")
+        print_and_log(f"最小值: {df['prompt_tokens'].min():.0f}")
+        print_and_log(f"最大值: {df['prompt_tokens'].max():.0f}")
+        
+        print_and_log("\n[5.2] 按答題正確性分組的 Tokens 統計")
+        tokens_by_correctness = df.groupby('is_correct')['prompt_tokens'].agg(['mean', 'median', 'count']).round(0)
+        tokens_by_correctness.index = ['Incorrect', 'Correct']
+        print_and_log(str(tokens_by_correctness))
+        
+        print_and_log("\n[5.3] 按問題類型的 Tokens 統計")
+        tokens_by_type = df.groupby('question_type').agg({
+            'prompt_tokens': ['mean', 'median'],
+            'is_correct': 'mean'
+        }).round(2)
+        tokens_by_type.columns = ['avg_tokens', 'median_tokens', 'accuracy']
+        print_and_log(str(tokens_by_type))
+        
+        print_and_log("\n[5.4] 按 Evidence 數量的 Tokens 統計")
+        tokens_by_evidence = df.groupby('evidence_category').agg({
+            'prompt_tokens': ['mean', 'median'],
+            'is_correct': 'mean',
+            'question_id': 'count'
+        }).round(2)
+        tokens_by_evidence.columns = ['avg_tokens', 'median_tokens', 'accuracy', 'count']
+        print_and_log(str(tokens_by_evidence))
+        
+        # Tokens 分布圖
+        plt.figure(figsize=(12, 5))
+        
+        plt.subplot(1, 2, 1)
+        df.boxplot(column='prompt_tokens', by='question_type', ax=plt.gca())
+        plt.title("Prompt Tokens by Question Type")
+        plt.suptitle("")
+        plt.xlabel("Question Type")
+        plt.ylabel("Prompt Tokens")
+        plt.xticks(rotation=45, ha='right')
+        
+        plt.subplot(1, 2, 2)
+        correct_tokens = df[df['is_correct'] == 1]['prompt_tokens']
+        incorrect_tokens = df[df['is_correct'] == 0]['prompt_tokens']
+        plt.boxplot([correct_tokens.dropna(), incorrect_tokens.dropna()], 
+                    labels=['Correct', 'Incorrect'])
+        plt.title("Prompt Tokens by Correctness")
+        plt.ylabel("Prompt Tokens")
+        plt.grid(True, axis='y', alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(output_dir, "tokens_analysis.png"))
+        print_and_log(f"\n✓ 圖表已儲存: {output_dir}/tokens_analysis.png")
+    
+    # ===== Multi-Evidence 詳細分析 =====
+    print_and_log("\n" + "="*80)
+    print_and_log("=== [6] Multi-Evidence 詳細分析 ===")
     print_and_log("="*80)
     
     multi_evidence_df = df[df['evidence_count'] > 1].copy()
@@ -288,25 +399,25 @@ def analyze(hypo_file, ref_file, retrieval_file=None, output_dir="."):
         # 計算證據跨度
         multi_evidence_df['evidence_span'] = multi_evidence_df['evidence_pos_max'] - multi_evidence_df['evidence_pos_min']
         
-        print_and_log("\n[4.1] 準確率 vs. Evidence 數量")
+        print_and_log("\n[6.1] 準確率 vs. Evidence 數量")
         count_stats = multi_evidence_df.groupby('evidence_count').agg({
             'is_correct': ['mean', 'count'],
             'evidence_span': 'mean'
         })
-        print_and_log(count_stats)
+        print_and_log(str(count_stats))
         
-        print_and_log("\n[4.2] 準確率 vs. Evidence 跨度")
+        print_and_log("\n[6.2] 準確率 vs. Evidence 跨度")
         multi_evidence_df['span_bin'] = pd.cut(
             multi_evidence_df['evidence_span'],
             bins=3,
             labels=['Small (<0.33)', 'Medium (0.33-0.67)', 'Large (>0.67)']
         )
         span_stats = multi_evidence_df.groupby('span_bin', observed=False)['is_correct'].agg(['mean', 'count'])
-        print_and_log(span_stats)
+        print_and_log(str(span_stats))
     
     # ===== Context Length 分析 =====
     print_and_log("\n" + "="*80)
-    print_and_log("=== [5] Context Length 分析 ===")
+    print_and_log("=== [7] Context Length 分析 ===")
     print_and_log("="*80)
     
     df['history_bin'] = pd.cut(
@@ -319,7 +430,7 @@ def analyze(hypo_file, ref_file, retrieval_file=None, output_dir="."):
         'is_correct': ['mean', 'count'],
         'recall@10': 'mean' if retrieval_file else lambda x: 0
     })
-    print_and_log(history_stats)
+    print_and_log(str(history_stats))
     
     print_and_log("\n" + "="*80)
     print_and_log("分析完成！")
@@ -380,8 +491,9 @@ if __name__ == '__main__':
     parser.add_argument('hypo_file', type=str, help="生成結果檔案 (.jsonl with autoeval_label)")
     parser.add_argument('ref_file', type=str, help="參考答案檔案 (.json)")
     parser.add_argument('--retrieval', type=str, help="檢索結果檔案（可選，用於計算 Recall）")
+    parser.add_argument('--generation', type=str, help="生成檔案（可選，用於讀取 tokens 資訊，如果與 hypo_file 不同）")
     parser.add_argument('--output-dir', type=str, default="analysis_results", help="圖表輸出目錄")
     
     args = parser.parse_args()
     
-    analyze(args.hypo_file, args.ref_file, args.retrieval, args.output_dir)
+    analyze(args.hypo_file, args.ref_file, args.retrieval, args.output_dir, args.generation)

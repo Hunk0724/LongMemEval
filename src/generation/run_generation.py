@@ -464,6 +464,7 @@ def main(args):
             output_entry = {
                 'question_id': entry['question_id'],
                 'hypothesis': answer,
+                'prompt': prompt,  # 保存完整的 prompt（包含檢索到的文本和 system prompt）
                 'usage': {
                     'prompt_tokens': prompt_tokens,
                     'completion_tokens': completion_tokens,

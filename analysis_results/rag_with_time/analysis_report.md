@@ -4,11 +4,8 @@
 
 **參考答案檔案**: `longmemeval_s_cleaned.json`
 
-**檢索結果檔案**: `longmemeval_s_cleaned.json_retrievallog_turn_flat-stella.timefilteredgpt-4o`
-
 ---
 
-✓ 載入檢索結果: 500 個問題
 
 ================================================================================
 
@@ -40,53 +37,19 @@ Abstention Accuracy:    0.8667 (30)
 
 ================================================================================
 
---- [1] Retrieval Recall 分析 ---
-
---------------------------------------------------------------------------------
-平均 Recall@5:  0.6523
-平均 Recall@10: 0.7246
-平均 Recall@50: 0.7814
-
-[1.1] Recall@10 vs. 準確率
-```
-                       mean  count
-recall_bin                        
-Low (<0.5)         0.367347     49
-Medium (0.5-0.99)  0.227273     22
-Perfect (1.0)      0.533742    326
-```
-
-
-[1.2] 錯誤歸因分析（整體）
-檢索失敗 (Recall < 1.0): 95 / 247 (38.5%)
-推理失敗 (Recall = 1.0): 152 / 247 (61.5%)
-
-[1.3] 按問題類型分解的 Recall 和錯誤歸因
-
-完整統計表：
-            question_type  count  accuracy  avg_recall@10  incorrect  retrieval_fail  retrieval_fail_%  reasoning_fail  reasoning_fail_%
-         knowledge-update     78  0.756410       0.891026         19               2         10.526316              17         89.473684
-            multi-session    133  0.375940       0.732456         83              37         44.578313              46         55.421687
- single-session-assistant     56  0.535714       0.071429         26              25         96.153846               1          3.846154
-single-session-preference     30  0.300000       0.933333         21               2          9.523810              19         90.476190
-      single-session-user     70  0.857143       0.871429         10               2         20.000000               8         80.000000
-       temporal-reasoning    133  0.338346       0.769925         88              27         30.681818              61         69.318182
-
-================================================================================
-
 --- [2] 準確率 vs. 問題類型 ---
 
 --------------------------------------------------------------------------------
 ```
                           is_correct       recall@10
-                                mean count      mean
+                                mean count  <lambda>
 question_type                                       
-knowledge-update            0.756410    78  0.891026
-multi-session               0.375940   133  0.732456
-single-session-assistant    0.535714    56  0.071429
-single-session-preference   0.300000    30  0.933333
-single-session-user         0.857143    70  0.871429
-temporal-reasoning          0.338346   133  0.769925
+knowledge-update            0.756410    78         0
+multi-session               0.375940   133         0
+single-session-assistant    0.535714    56         0
+single-session-preference   0.300000    30         0
+single-session-user         0.857143    70         0
+temporal-reasoning          0.338346   133         0
 ```
 
 
@@ -100,13 +63,13 @@ Single-Evidence 樣本數: 176 / 500
 [3.1] 準確率 vs. Evidence 位置
 ```
                  is_correct       recall@10
-                       mean count      mean
+                       mean count  <lambda>
 pos_bin                                    
-0-20% (Oldest)     0.724138    29  0.655172
-20-40%             0.583333    36  0.638889
-40-60%             0.480000    25  0.560000
-60-80%             0.666667    39  0.564103
-80-100% (Newest)   0.638298    47  0.659574
+0-20% (Oldest)     0.724138    29         0
+20-40%             0.583333    36         0
+40-60%             0.480000    25         0
+60-80%             0.666667    39         0
+80-100% (Newest)   0.638298    47         0
 ```
 
 
@@ -114,12 +77,75 @@ pos_bin
 
 ================================================================================
 
---- [4] Multi-Evidence 分析 ---
+--- [4] Single-Evidence vs Multi-Evidence 按問題類型分析 ---
+
+--------------------------------------------------------------------------------
+
+[4.1] 整體分布
+Single-Evidence: 176 題
+Multi-Evidence:  324 題
+
+[4.2] 按問題類型和證據數量分解的準確率
+```
+                                            is_correct       recall@10 prompt_tokens
+                                                  mean count  <lambda>          mean
+evidence_category question_type                                                     
+Multi             knowledge-update              0.7564    78         0     2096.5385
+                  multi-session                 0.3759   133         0     2218.1353
+                  temporal-reasoning            0.3009   113         0     2450.2035
+Single            single-session-assistant      0.5357    56         0     2937.5714
+                  single-session-preference     0.3000    30         0     3051.2333
+                  single-session-user           0.8571    70         0     1946.9429
+                  temporal-reasoning            0.5500    20         0     2788.8500
+```
+
+
+================================================================================
+
+--- [5] Input Tokens 分析 ---
+
+--------------------------------------------------------------------------------
+
+[5.1] 整體統計
+平均 Prompt Tokens: 2367
+中位數 Prompt Tokens: 2146
+最小值: 1739
+最大值: 6095
+
+[5.2] 按答題正確性分組的 Tokens 統計
+```
+             mean  median  count
+Incorrect  2487.0  2229.0    247
+Correct    2250.0  2046.0    253
+```
+
+
+[5.3] 按問題類型的 Tokens 統計
+                           avg_tokens  median_tokens  accuracy
+question_type                                                 
+knowledge-update              2096.54         1997.5      0.76
+multi-session                 2218.14         2085.0      0.38
+single-session-assistant      2937.57         2814.5      0.54
+single-session-preference     3051.23         2924.5      0.30
+single-session-user           1946.94         1874.5      0.86
+temporal-reasoning            2501.13         2255.0      0.34
+
+[5.4] 按 Evidence 數量的 Tokens 統計
+                   avg_tokens  median_tokens  accuracy  count
+evidence_category                                            
+Multi                 2269.80         2113.0      0.44    324
+Single                2546.05         2321.0      0.62    176
+
+✓ 圖表已儲存: analysis_results/rag_with_time/tokens_analysis.png
+
+================================================================================
+
+--- [6] Multi-Evidence 詳細分析 ---
 
 --------------------------------------------------------------------------------
 Multi-Evidence 樣本數: 324 / 500
 
-[4.1] 準確率 vs. Evidence 數量
+[6.1] 準確率 vs. Evidence 數量
 ```
                is_correct       evidence_span
                      mean count          mean
@@ -132,7 +158,7 @@ evidence_count
 ```
 
 
-[4.2] 準確率 vs. Evidence 跨度
+[6.2] 準確率 vs. Evidence 跨度
 ```
                         mean  count
 span_bin                           
@@ -144,17 +170,17 @@ Large (>0.67)       0.445946     74
 
 ================================================================================
 
---- [5] Context Length 分析 ---
+--- [7] Context Length 分析 ---
 
 --------------------------------------------------------------------------------
 ```
             is_correct       recall@10
-                  mean count      mean
+                  mean count  <lambda>
 history_bin                           
-0-50          0.489899   396  0.722811
-50-100        0.567308   104  0.731571
-100-150            NaN     0       NaN
-150-200            NaN     0       NaN
+0-50          0.489899   396         0
+50-100        0.567308   104         0
+100-150            NaN     0         0
+150-200            NaN     0         0
 ```
 
 

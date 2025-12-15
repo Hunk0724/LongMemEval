@@ -114,12 +114,75 @@ pos_bin
 
 ================================================================================
 
---- [4] Multi-Evidence 分析 ---
+--- [4] Single-Evidence vs Multi-Evidence 按問題類型分析 ---
+
+--------------------------------------------------------------------------------
+
+[4.1] 整體分布
+Single-Evidence: 176 題
+Multi-Evidence:  324 題
+
+[4.2] 按問題類型和證據數量分解的準確率
+```
+                                            is_correct       recall@10 prompt_tokens
+                                                  mean count      mean          mean
+evidence_category question_type                                                     
+Multi             knowledge-update              0.7692    78    0.9103     2099.5000
+                  multi-session                 0.3910   133    0.7851     2281.9549
+                  temporal-reasoning            0.3274   113    0.7842     2485.4867
+Single            single-session-assistant      0.5357    56    0.0714     2937.5714
+                  single-session-preference     0.3000    30    0.9333     3051.2333
+                  single-session-user           0.9000    70    0.9143     1952.2000
+                  temporal-reasoning            0.6500    20    0.8500     2858.0500
+```
+
+
+================================================================================
+
+--- [5] Input Tokens 分析 ---
+
+--------------------------------------------------------------------------------
+
+[5.1] 整體統計
+平均 Prompt Tokens: 2396
+中位數 Prompt Tokens: 2197
+最小值: 1739
+最大值: 6095
+
+[5.2] 按答題正確性分組的 Tokens 統計
+```
+             mean  median  count
+Incorrect  2542.0  2306.0    236
+Correct    2265.0  2048.0    264
+```
+
+
+[5.3] 按問題類型的 Tokens 統計
+                           avg_tokens  median_tokens  accuracy
+question_type                                                 
+knowledge-update              2099.50         1999.5      0.77
+multi-session                 2281.95         2145.0      0.39
+single-session-assistant      2937.57         2814.5      0.54
+single-session-preference     3051.23         2924.5      0.30
+single-session-user           1952.20         1874.5      0.90
+temporal-reasoning            2541.51         2291.0      0.38
+
+[5.4] 按 Evidence 數量的 Tokens 統計
+                   avg_tokens  median_tokens  accuracy  count
+evidence_category                                            
+Multi                 2309.02         2158.5      0.46    324
+Single                2556.00         2321.0      0.65    176
+
+✓ 圖表已儲存: analysis_results/rag_without_time/tokens_analysis.png
+
+================================================================================
+
+--- [6] Multi-Evidence 詳細分析 ---
 
 --------------------------------------------------------------------------------
 Multi-Evidence 樣本數: 324 / 500
 
-[4.1] 準確率 vs. Evidence 數量
+[6.1] 準確率 vs. Evidence 數量
 ```
                is_correct       evidence_span
                      mean count          mean
@@ -132,7 +195,7 @@ evidence_count
 ```
 
 
-[4.2] 準確率 vs. Evidence 跨度
+[6.2] 準確率 vs. Evidence 跨度
 ```
                         mean  count
 span_bin                           
@@ -144,7 +207,7 @@ Large (>0.67)       0.432432     74
 
 ================================================================================
 
---- [5] Context Length 分析 ---
+--- [7] Context Length 分析 ---
 
 --------------------------------------------------------------------------------
 ```
