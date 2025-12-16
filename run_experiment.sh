@@ -388,7 +388,12 @@ run_generation() {
     fi
     
     # 輸出目錄
-    EXP_NAME="${METHOD}_${RETRIEVER:-fullhistory}_${EXPANSION:-none}"
+    # 包含所有關鍵設定：METHOD, RETRIEVER, EXPANSION, GRANULARITY, READING
+    if [ "$METHOD" = "rag" ]; then
+        EXP_NAME="${METHOD}_${RETRIEVER}_${EXPANSION}_${GRANULARITY}"
+    else
+        EXP_NAME="${METHOD}_${RETRIEVER:-fullhistory}_${EXPANSION:-none}"
+    fi
     OUT_DIR="${HOME_DIR}/generation_logs/${EXP_NAME}/${MODEL_ALIAS}/${READING}"
     mkdir -p "$OUT_DIR"
     
@@ -436,7 +441,12 @@ run_evaluation() {
     echo_info "步驟 3: 評估結果"
     echo_info "=========================================="
     
-    EXP_NAME="${METHOD}_${RETRIEVER:-fullhistory}_${EXPANSION:-none}"
+    # 與生成步驟保持一致的路徑命名
+    if [ "$METHOD" = "rag" ]; then
+        EXP_NAME="${METHOD}_${RETRIEVER}_${EXPANSION}_${GRANULARITY}"
+    else
+        EXP_NAME="${METHOD}_${RETRIEVER:-fullhistory}_${EXPANSION:-none}"
+    fi
     GEN_DIR="${HOME_DIR}/generation_logs/${EXP_NAME}/${MODEL_ALIAS}/${READING}"
     
     HYPO_FILE=$(ls -t ${GEN_DIR}/*.jsonl 2>/dev/null | head -1)
