@@ -29,9 +29,11 @@ show_usage() {
 用法: $0 [選項]
 
 選項:
-  -d, --data DATA          數據集 (s|oracle|m)
+  -d, --data DATA          數據集 (s|oracle|oracle_bc|oracle_answer_only|m)
                            s = longmemeval_s_cleaned.json
                            oracle = longmemeval_oracle.json
+                           oracle_bc = longmemeval_oracle_bc_only.json (B+C 類，166 題)
+                           oracle_answer_only = longmemeval_oracle_answer_only.json (只保留答案 turn)
                            m = longmemeval_m_cleaned.json
 
   -m, --method METHOD      方法 (rag|fullhistory)
@@ -49,6 +51,9 @@ show_usage() {
                            direct = 直接回答
                            cot = Chain-of-Thought
                            con = Chain-of-Note (論文最佳)
+
+  --con-prompt FILE        CoN prompt 檔案 (預設: prompts/con/origin.txt)
+                           可選: origin.txt, light_4k.txt, medium_2k.txt, heavy_500.txt
 
   -k, --topk K             Top-K 檢索數量 (預設: 50，論文設定)
   
@@ -94,6 +99,7 @@ METHOD="rag"
 RETRIEVER="stella"
 EXPANSION="userfact"
 READING="con"
+CON_PROMPT="prompts/con/origin.txt"  # CoN prompt 檔案
 TOPK=50  # 論文預設
 GRANULARITY="turn"  # 論文 Figure 5: Turn 優於 Session
 TIME_AWARE=false  # Time-Aware Query Expansion
@@ -111,6 +117,7 @@ while [[ $# -gt 0 ]]; do
         -r|--retriever) RETRIEVER="$2"; shift 2 ;;
         -e|--expansion) EXPANSION="$2"; shift 2 ;;
         -t|--reading) READING="$2"; shift 2 ;;
+        --con-prompt) CON_PROMPT="$2"; shift 2 ;;
         -k|--topk) TOPK="$2"; shift 2 ;;
         -g|--granularity) GRANULARITY="$2"; shift 2 ;;
         --time-aware) TIME_AWARE=true; shift ;;
@@ -133,6 +140,8 @@ done
 case $DATA in
     s) DATA_FILE="${HOME_DIR}/data/longmemeval_s_cleaned.json" ;;
     oracle) DATA_FILE="${HOME_DIR}/data/longmemeval_oracle.json" ;;
+    oracle_bc) DATA_FILE="${HOME_DIR}/data/longmemeval_oracle_bc_only.json" ;;
+    oracle_answer_only) DATA_FILE="${HOME_DIR}/data/longmemeval_oracle_answer_only.json" ;;
     m) DATA_FILE="${HOME_DIR}/data/longmemeval_m_cleaned.json" ;;
     *) echo_error "無效的數據集: $DATA"; exit 1 ;;
 esac
@@ -408,6 +417,12 @@ run_generation() {
         echo_info "啟用斷點續傳模式"
     fi
     
+    # 構建 CoN prompt 參數
+    CON_PROMPT_ARG=""
+    if [ "$CON" = "true" ]; then
+        CON_PROMPT_ARG="--con_prompt_file $CON_PROMPT"
+    fi
+    
     python3 run_generation.py \
         --in_file "$INPUT_FILE" \
         --out_dir "$OUT_DIR" \
@@ -422,7 +437,7 @@ run_generation() {
         --cot "$COT" \
         --con "$CON" \
         --merge_key_expansion_into_value none \
-        $RESUME_FLAG \
+        $CON_PROMPT_ARG \
         $RESUME_FLAG
     
     echo ""
@@ -449,7 +464,13 @@ run_evaluation() {
     fi
     GEN_DIR="${HOME_DIR}/generation_logs/${EXP_NAME}/${MODEL_ALIAS}/${READING}"
     
-    HYPO_FILE=$(ls -t ${GEN_DIR}/*.jsonl 2>/dev/null | head -1)
+    # 如果使用了 CoN prompt，需要匹配檔名中的 prompt 標識
+    if [ "$CON" = "true" ] && [ -n "$CON_PROMPT" ]; then
+        PROMPT_NAME=$(basename "$CON_PROMPT" .txt)
+        HYPO_FILE=$(ls -t ${GEN_DIR}/*_con${PROMPT_NAME}_*.jsonl 2>/dev/null | grep -v "eval-results" | head -1)
+    else
+        HYPO_FILE=$(ls -t ${GEN_DIR}/*.jsonl 2>/dev/null | grep -v "eval-results" | head -1)
+    fi
     
     if [ -z "$HYPO_FILE" ]; then
         echo_error "找不到生成結果"
