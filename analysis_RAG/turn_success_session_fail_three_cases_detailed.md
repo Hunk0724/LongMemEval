@@ -1,6 +1,6 @@
-# Turn 成功 & Session 失敗：兩個案例的完整 CoN 壓縮文本分析（含 Evidence 標示）
+# Turn 成功 & Session 失敗：三個案例的完整 CoN 壓縮文本分析（含 Evidence 標示）
 
-本報告包含兩個 **RAG+UF+CoN Turn 答對但 RAG+UF+CoN Session 答錯** 案例的完整信息，
+本報告包含三個 **RAG+UF+CoN Turn 答對但 RAG+UF+CoN Session 答錯** 案例的完整信息，
 **重要**：本報告只包含 Oracle CoT 答對的題目，因為只有這些題目在給正確答案時有答對，用 RAG 答錯的話才有改善空間。
 包括每個 turn/session 經過 CoN 壓縮後得到的文本。
 **重要**：報告中會標示出哪些檢索到的 turn/session 是 evidence（相關文檔）。
@@ -1536,3 +1536,982 @@ Therefore, the total number of days that had passed since one of the shoelaces o
 ```
 
 ---
+
+## multi-session 案例: ef66a6e5
+
+### 問題內容
+
+How many sports have I played competitively in the past?
+
+### 正確答案
+
+**two**
+
+### 證據 Session IDs
+
+answer_f7fd1029_2, answer_f7fd1029_1
+
+### RAG+UF+CoN Turn 配置
+
+**Prompt Tokens**: 2225
+**Sessions 數**: 50
+
+#### Turn 配置：每個 Session 的 CoN 壓縮結果（已標示對應的檢索 Rank 和 Evidence）
+
+**說明**：以下 Sessions 按 prompt 中的順序排列（已按時間戳排序）。
+每個 Session 旁邊標示對應的檢索 Rank（原始排名）和 Evidence 狀態。
+
+##### Session 1 (日期: 2023/05/20 (Sat) 21:02)
+
+**檢索 Rank 25** | `9793daa3_2_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 2 (日期: 2023/05/20 (Sat) 21:02)
+
+**檢索 Rank 46** | `9793daa3_2_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 3 (日期: 2023/05/21 (Sun) 09:37)
+
+**檢索 Rank 5** | `afb58af0_9`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 4 (日期: 2023/05/21 (Sun) 09:37)
+
+**檢索 Rank 19** | `afb58af0_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 5 (日期: 2023/05/21 (Sun) 09:37)
+
+**檢索 Rank 22** | `afb58af0_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 6 (日期: 2023/05/21 (Sun) 09:37)
+
+**檢索 Rank 29** | `afb58af0_11`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 7 (日期: 2023/05/21 (Sun) 20:52)
+
+**檢索 Rank 34** | `ultrachat_61361_11`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 8 (日期: 2023/05/22 (Mon) 03:32)
+
+**檢索 Rank 28** | `295645f5_1_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 9 (日期: 2023/05/22 (Mon) 03:32)
+
+**檢索 Rank 36** | `295645f5_1_11`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 10 (日期: 2023/05/22 (Mon) 16:43)
+
+**檢索 Rank 38** | `ultrachat_326152_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 11 (日期: 2023/05/22 (Mon) 21:24)
+
+**檢索 Rank 37** | `75b61326_7`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 12 (日期: 2023/05/22 (Mon) 21:54)
+
+**檢索 Rank 41** | `dd25eeb5_4_9`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 13 (日期: 2023/05/22 (Mon) 21:54)
+
+**檢索 Rank 42** | `dd25eeb5_4_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 14 (日期: 2023/05/24 (Wed) 03:16)
+
+**檢索 Rank 14** | `41e778e4_2_9`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 15 (日期: 2023/05/24 (Wed) 03:16)
+
+**檢索 Rank 20** | `41e778e4_2_11`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 16 (日期: 2023/05/24 (Wed) 03:16)
+
+**檢索 Rank 30** | `41e778e4_2_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 17 (日期: 2023/05/24 (Wed) 04:04)
+
+**檢索 Rank 47** | `74c2d3a1_1_5`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 18 (日期: 2023/05/25 (Thu) 22:30)
+
+**檢索 Rank 15** | `48941fec_4_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 19 (日期: 2023/05/25 (Thu) 22:30)
+
+**檢索 Rank 16** | `48941fec_4_5`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 20 (日期: 2023/05/25 (Thu) 22:30)
+
+**檢索 Rank 27** | `48941fec_4_7`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 21 (日期: 2023/05/25 (Thu) 22:30)
+
+**檢索 Rank 31** | `48941fec_4_11`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 22 (日期: 2023/05/25 (Thu) 22:30)
+
+**檢索 Rank 43** | `48941fec_4_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 23 (日期: 2023/05/26 (Fri) 00:45)
+
+**檢索 Rank 6** | `noans_f7fd1029_2_11`
+
+**CoN 壓縮結果**:
+```
+The user mentioned that they "swam competitively in college", but there is no mention of any other competitive sports. 
+
+Extracted note:
+* Competitive sport(s) played: swimming
+```
+
+##### Session 24 (日期: 2023/05/26 (Fri) 00:45)
+
+**檢索 Rank 7** | `noans_f7fd1029_2_9`
+
+**CoN 壓縮結果**:
+```
+Extracted note:
+The user mentioned that they used to swim competitively in college, but there is no mention of any other sports. 
+
+Therefore, the answer would be "1" sport, which is swimming.
+```
+
+##### Session 25 (日期: 2023/05/26 (Fri) 00:45)
+
+**檢索 Rank 8** | `answer_f7fd1029_2_1` | ✅ Evidence
+
+**CoN 壓縮結果**:
+```
+Extracted note:
+You mentioned playing competitively in college, but you did not specify the number of sports. 
+
+However, since you only mentioned swimming as the sport you used to compete in, it can be inferred that the answer is likely 1.
+```
+
+##### Session 26 (日期: 2023/05/26 (Fri) 00:45)
+
+**檢索 Rank 9** | `noans_f7fd1029_2_7`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 27 (日期: 2023/05/26 (Fri) 00:45)
+
+**檢索 Rank 10** | `noans_f7fd1029_2_5`
+
+**CoN 壓縮結果**:
+```
+Extracted note:
+The user has mentioned that they used to swim competitively in college, but there is no mention of any other competitive sports they may have participated in. 
+
+Therefore, the answer would be: "1" sport played competitively in the past (swimming).
+```
+
+##### Session 28 (日期: 2023/05/26 (Fri) 00:45)
+
+**檢索 Rank 11** | `noans_f7fd1029_2_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 29 (日期: 2023/05/26 (Fri) 16:17)
+
+**檢索 Rank 1** | `noans_f7fd1029_1_5`
+
+**CoN 壓縮結果**:
+```
+Based on the chat history, here are the extracted notes:
+
+* The user mentioned playing soccer games and tennis matches, but did not mention any other competitive sports.
+* There is no information about the user's past experience with running competitively.
+
+Therefore, the extracted note is:
+"2 (soccer and tennis)"
+```
+
+##### Session 30 (日期: 2023/05/26 (Fri) 16:17)
+
+**檢索 Rank 2** | `answer_f7fd1029_1_3` | ✅ Evidence
+
+**CoN 壓縮結果**:
+```
+**Extracted Note**
+
+* The user has mentioned that they used to play tennis competitively in high school.
+* There is no mention of any other competitive sports played by the user.
+
+**Relevant Information for Answering the Question:**
+
+* 1 sport (Tennis)
+```
+
+##### Session 31 (日期: 2023/05/26 (Fri) 16:17)
+
+**檢索 Rank 3** | `noans_f7fd1029_1_1`
+
+**CoN 壓縮結果**:
+```
+**Extracted Note**
+
+* Relevant user information:
+\t+ User has been playing soccer and tennis lately.
+* No specific information is found about how many sports they have played competitively in the past.
+
+Since there's no direct mention of the number of competitive sports played, I'll output "empty" as per your instructions.
+```
+
+##### Session 32 (日期: 2023/05/26 (Fri) 16:17)
+
+**檢索 Rank 4** | `noans_f7fd1029_1_7`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 33 (日期: 2023/05/26 (Fri) 16:17)
+
+**檢索 Rank 12** | `noans_f7fd1029_1_9`
+
+**CoN 壓縮結果**:
+```
+The user mentioned playing tennis, but there is no mention of any other competitive sports. The chat history only discusses the user's interest in using their Garmin Forerunner 945 watch for tennis lessons and training.
+
+Extracted note: 
+- User plays tennis competitively. 
+
+Note: There is no information about the number of sports played competitively by the user, so I couldn't extract a specific answer to that question.
+```
+
+##### Session 34 (日期: 2023/05/26 (Fri) 16:17)
+
+**檢索 Rank 21** | `noans_f7fd1029_1_11`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 35 (日期: 2023/05/26 (Fri) 19:41)
+
+**檢索 Rank 13** | `3f05a03e_1_5`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 36 (日期: 2023/05/26 (Fri) 19:41)
+
+**檢索 Rank 39** | `3f05a03e_1_11`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 37 (日期: 2023/05/27 (Sat) 09:32)
+
+**檢索 Rank 48** | `7c08d74b_1_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 38 (日期: 2023/05/27 (Sat) 15:01)
+
+**檢索 Rank 17** | `8c25f527_7`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 39 (日期: 2023/05/27 (Sat) 15:01)
+
+**檢索 Rank 40** | `8c25f527_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 40 (日期: 2023/05/28 (Sun) 09:19)
+
+**檢索 Rank 35** | `147ab7e9_6_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 41 (日期: 2023/05/28 (Sun) 21:04)
+
+**檢索 Rank 24** | `59a6150d_4_7`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 42 (日期: 2023/05/28 (Sun) 21:04)
+
+**檢索 Rank 32** | `59a6150d_4_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 43 (日期: 2023/05/28 (Sun) 21:04)
+
+**檢索 Rank 33** | `59a6150d_4_5`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 44 (日期: 2023/05/28 (Sun) 21:04)
+
+**檢索 Rank 44** | `59a6150d_4_9`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 45 (日期: 2023/05/28 (Sun) 23:23)
+
+**檢索 Rank 26** | `d54fb0e0_2_5`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 46 (日期: 2023/05/28 (Sun) 23:23)
+
+**檢索 Rank 45** | `d54fb0e0_2_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 47 (日期: 2023/05/28 (Sun) 23:23)
+
+**檢索 Rank 49** | `d54fb0e0_2_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 48 (日期: 2023/05/28 (Sun) 23:23)
+
+**檢索 Rank 50** | `d54fb0e0_2_9`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 49 (日期: 2023/05/29 (Mon) 09:56)
+
+**檢索 Rank 18** | `dc3f4850_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 50 (日期: 2023/05/29 (Mon) 09:56)
+
+**檢索 Rank 23** | `dc3f4850_9`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+#### Turn 配置：Top-50 檢索結果（按檢索分數排序）
+
+| Rank | Corpus ID | Timestamp | Evidence |
+|------|-----------|-----------|----------|
+| 1 | `noans_f7fd1029_1_5` | 2023/05/26 (Fri) 16:17 |  |
+| 2 | `answer_f7fd1029_1_3` | 2023/05/26 (Fri) 16:17 | ✅ Evidence |
+| 3 | `noans_f7fd1029_1_1` | 2023/05/26 (Fri) 16:17 |  |
+| 4 | `noans_f7fd1029_1_7` | 2023/05/26 (Fri) 16:17 |  |
+| 5 | `afb58af0_9` | 2023/05/21 (Sun) 09:37 |  |
+| 6 | `noans_f7fd1029_2_11` | 2023/05/26 (Fri) 00:45 |  |
+| 7 | `noans_f7fd1029_2_9` | 2023/05/26 (Fri) 00:45 |  |
+| 8 | `answer_f7fd1029_2_1` | 2023/05/26 (Fri) 00:45 | ✅ Evidence |
+| 9 | `noans_f7fd1029_2_7` | 2023/05/26 (Fri) 00:45 |  |
+| 10 | `noans_f7fd1029_2_5` | 2023/05/26 (Fri) 00:45 |  |
+| 11 | `noans_f7fd1029_2_3` | 2023/05/26 (Fri) 00:45 |  |
+| 12 | `noans_f7fd1029_1_9` | 2023/05/26 (Fri) 16:17 |  |
+| 13 | `3f05a03e_1_5` | 2023/05/26 (Fri) 19:41 |  |
+| 14 | `41e778e4_2_9` | 2023/05/24 (Wed) 03:16 |  |
+| 15 | `48941fec_4_3` | 2023/05/25 (Thu) 22:30 |  |
+| 16 | `48941fec_4_5` | 2023/05/25 (Thu) 22:30 |  |
+| 17 | `8c25f527_7` | 2023/05/27 (Sat) 15:01 |  |
+| 18 | `dc3f4850_1` | 2023/05/29 (Mon) 09:56 |  |
+| 19 | `afb58af0_3` | 2023/05/21 (Sun) 09:37 |  |
+| 20 | `41e778e4_2_11` | 2023/05/24 (Wed) 03:16 |  |
+| 21 | `noans_f7fd1029_1_11` | 2023/05/26 (Fri) 16:17 |  |
+| 22 | `afb58af0_1` | 2023/05/21 (Sun) 09:37 |  |
+| 23 | `dc3f4850_9` | 2023/05/29 (Mon) 09:56 |  |
+| 24 | `59a6150d_4_7` | 2023/05/28 (Sun) 21:04 |  |
+| 25 | `9793daa3_2_3` | 2023/05/20 (Sat) 21:02 |  |
+| 26 | `d54fb0e0_2_5` | 2023/05/28 (Sun) 23:23 |  |
+| 27 | `48941fec_4_7` | 2023/05/25 (Thu) 22:30 |  |
+| 28 | `295645f5_1_1` | 2023/05/22 (Mon) 03:32 |  |
+| 29 | `afb58af0_11` | 2023/05/21 (Sun) 09:37 |  |
+| 30 | `41e778e4_2_1` | 2023/05/24 (Wed) 03:16 |  |
+| 31 | `48941fec_4_11` | 2023/05/25 (Thu) 22:30 |  |
+| 32 | `59a6150d_4_1` | 2023/05/28 (Sun) 21:04 |  |
+| 33 | `59a6150d_4_5` | 2023/05/28 (Sun) 21:04 |  |
+| 34 | `ultrachat_61361_11` | 2023/05/21 (Sun) 20:52 |  |
+| 35 | `147ab7e9_6_3` | 2023/05/28 (Sun) 09:19 |  |
+| 36 | `295645f5_1_11` | 2023/05/22 (Mon) 03:32 |  |
+| 37 | `75b61326_7` | 2023/05/22 (Mon) 21:24 |  |
+| 38 | `ultrachat_326152_1` | 2023/05/22 (Mon) 16:43 |  |
+| 39 | `3f05a03e_1_11` | 2023/05/26 (Fri) 19:41 |  |
+| 40 | `8c25f527_3` | 2023/05/27 (Sat) 15:01 |  |
+| 41 | `dd25eeb5_4_9` | 2023/05/22 (Mon) 21:54 |  |
+| 42 | `dd25eeb5_4_3` | 2023/05/22 (Mon) 21:54 |  |
+| 43 | `48941fec_4_1` | 2023/05/25 (Thu) 22:30 |  |
+| 44 | `59a6150d_4_9` | 2023/05/28 (Sun) 21:04 |  |
+| 45 | `d54fb0e0_2_1` | 2023/05/28 (Sun) 23:23 |  |
+| 46 | `9793daa3_2_1` | 2023/05/20 (Sat) 21:02 |  |
+| 47 | `74c2d3a1_1_5` | 2023/05/24 (Wed) 04:04 |  |
+| 48 | `7c08d74b_1_3` | 2023/05/27 (Sat) 09:32 |  |
+| 49 | `d54fb0e0_2_3` | 2023/05/28 (Sun) 23:23 |  |
+| 50 | `d54fb0e0_2_9` | 2023/05/28 (Sun) 23:23 |  |
+
+**統計**: Top-50 中有 2 個 evidence turns
+
+#### Turn 模型輸出
+
+**狀態**: ✅ 正確
+
+```
+To answer this question, we need to extract relevant information from the chat history and reason over it.
+
+**Step 1: Extract relevant information**
+
+From Session 23 to Session 27, there is a mention of competitive sports played by the user. Specifically:
+
+* Session 24: The user mentioned that they used to swim competitively in college.
+* Session 25: It's inferred that the answer is likely 1 sport (swimming).
+* Session 26: There is no additional information about other competitive sports.
+
+From Session 29 to Session 33, there are mentions of soccer and tennis:
+
+* Session 29: The user mentioned playing soccer games and tennis matches.
+* Session 30: The user has mentioned that they used to play tennis competitively in high school.
+* Session 31: There is no specific information about the number of competitive sports played.
+
+**Step 2: Reason over the extracted information**
+
+From the extracted information, we can see that there are two mentions of competitive sports:
+
+1. Swimming (Session 24)
+2. Tennis (Session 30)
+
+There is also a mention of soccer games and tennis matches in Session 29, but it's not clear if these were competitive or recreational.
+
+Since there is no additional information about other competitive sports, we can conclude that the user has played at least two sports competitively: swimming and tennis.
+
+**Step 3: Answer the question**
+
+Based on the extracted information and reasoning, the answer to the question "How many sports have I played competitively in the past?" is:
+
+At least 2 sports (swimming and tennis).
+```
+
+### RAG+UF+CoN Session 配置
+
+**Prompt Tokens**: 1302
+**Sessions 數**: 32
+
+#### Session 配置：每個 Session 的 CoN 壓縮結果（已標示對應的檢索 Rank 和 Evidence）
+
+**說明**：以下 Sessions 按 prompt 中的順序排列（已按時間戳排序）。
+每個 Session 旁邊標示對應的檢索 Rank（原始排名）和 Evidence 狀態。
+
+##### Session 1 (日期: 2023/05/20 (Sat) 01:34)
+
+**檢索 Rank 11** | `sharegpt_BsQhkZL_11`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 2 (日期: 2023/05/20 (Sat) 09:23)
+
+**檢索 Rank 32** | `ultrachat_264003`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 3 (日期: 2023/05/20 (Sat) 21:02)
+
+**檢索 Rank 6** | `9793daa3_2`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 4 (日期: 2023/05/21 (Sun) 09:37)
+
+**檢索 Rank 3** | `afb58af0`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 5 (日期: 2023/05/21 (Sun) 09:51)
+
+**檢索 Rank 24** | `5273d4b8`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 6 (日期: 2023/05/21 (Sun) 20:52)
+
+**檢索 Rank 16** | `ultrachat_61361`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 7 (日期: 2023/05/21 (Sun) 22:07)
+
+**檢索 Rank 25** | `ultrachat_428073`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 8 (日期: 2023/05/22 (Mon) 03:32)
+
+**檢索 Rank 28** | `295645f5_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 9 (日期: 2023/05/22 (Mon) 04:26)
+
+**檢索 Rank 15** | `4c08398b_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 10 (日期: 2023/05/22 (Mon) 11:15)
+
+**檢索 Rank 27** | `e307e277_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 11 (日期: 2023/05/22 (Mon) 16:43)
+
+**檢索 Rank 9** | `ultrachat_326152`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 12 (日期: 2023/05/22 (Mon) 21:24)
+
+**檢索 Rank 12** | `75b61326`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 13 (日期: 2023/05/22 (Mon) 21:54)
+
+**檢索 Rank 13** | `dd25eeb5_4`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 14 (日期: 2023/05/24 (Wed) 03:16)
+
+**檢索 Rank 5** | `41e778e4_2`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 15 (日期: 2023/05/24 (Wed) 04:04)
+
+**檢索 Rank 22** | `74c2d3a1_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 16 (日期: 2023/05/24 (Wed) 21:08)
+
+**檢索 Rank 30** | `67045503`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 17 (日期: 2023/05/25 (Thu) 10:46)
+
+**檢索 Rank 18** | `d8e33f5c_abs_2`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 18 (日期: 2023/05/25 (Thu) 17:41)
+
+**檢索 Rank 31** | `21ef2d05_2`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 19 (日期: 2023/05/25 (Thu) 22:30)
+
+**檢索 Rank 7** | `48941fec_4`
+
+**CoN 壓縮結果**:
+```
+Based on the chat history, there is no information about the user's competitive sports experience. The only mention of a sport is when the user mentions their yoga class, but it does not indicate that they have played it competitively.
+
+Therefore, my extracted note is: empty
+```
+
+##### Session 20 (日期: 2023/05/26 (Fri) 00:45)
+
+**檢索 Rank 1** | `answer_f7fd1029_2` | ✅ Evidence
+
+**CoN 壓縮結果**:
+```
+Based on the chat history, the extracted notes are:
+
+* The user mentioned that they used to swim competitively in college.
+* There is no mention of any other competitive sports played by the user.
+
+Therefore, the answer to the question "How many sports have I played competitively in the past?" would be 1.
+```
+
+##### Session 21 (日期: 2023/05/26 (Fri) 01:43)
+
+**檢索 Rank 21** | `sharegpt_gKz9Tg1_0`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 22 (日期: 2023/05/26 (Fri) 16:17)
+
+**檢索 Rank 2** | `answer_f7fd1029_1` | ✅ Evidence
+
+**CoN 壓縮結果**:
+```
+Based on the chat history, the user has mentioned playing soccer and tennis competitively in the past. Therefore, the answer is:
+
+2 sports
+```
+
+##### Session 23 (日期: 2023/05/26 (Fri) 19:41)
+
+**檢索 Rank 10** | `3f05a03e_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 24 (日期: 2023/05/27 (Sat) 09:32)
+
+**檢索 Rank 23** | `7c08d74b_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 25 (日期: 2023/05/27 (Sat) 15:01)
+
+**檢索 Rank 4** | `8c25f527`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 26 (日期: 2023/05/28 (Sun) 09:19)
+
+**檢索 Rank 14** | `147ab7e9_6`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 27 (日期: 2023/05/28 (Sun) 14:10)
+
+**檢索 Rank 26** | `9863a1c8_3`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 28 (日期: 2023/05/28 (Sun) 21:04)
+
+**檢索 Rank 19** | `59a6150d_4`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 29 (日期: 2023/05/28 (Sun) 23:23)
+
+**檢索 Rank 8** | `d54fb0e0_2`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 30 (日期: 2023/05/29 (Mon) 06:04)
+
+**檢索 Rank 29** | `3aa868c7_1`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 31 (日期: 2023/05/29 (Mon) 09:56)
+
+**檢索 Rank 20** | `dc3f4850`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+##### Session 32 (日期: 2023/05/29 (Mon) 13:09)
+
+**檢索 Rank 17** | `502b6b52_4`
+
+**CoN 壓縮結果**:
+```
+empty
+```
+
+#### Session 配置：Top-50 檢索結果（按檢索分數排序）
+
+| Rank | Corpus ID | Timestamp | Evidence |
+|------|-----------|-----------|----------|
+| 1 | `answer_f7fd1029_2` | 2023/05/26 (Fri) 00:45 | ✅ Evidence |
+| 2 | `answer_f7fd1029_1` | 2023/05/26 (Fri) 16:17 | ✅ Evidence |
+| 3 | `afb58af0` | 2023/05/21 (Sun) 09:37 |  |
+| 4 | `8c25f527` | 2023/05/27 (Sat) 15:01 |  |
+| 5 | `41e778e4_2` | 2023/05/24 (Wed) 03:16 |  |
+| 6 | `9793daa3_2` | 2023/05/20 (Sat) 21:02 |  |
+| 7 | `48941fec_4` | 2023/05/25 (Thu) 22:30 |  |
+| 8 | `d54fb0e0_2` | 2023/05/28 (Sun) 23:23 |  |
+| 9 | `ultrachat_326152` | 2023/05/22 (Mon) 16:43 |  |
+| 10 | `3f05a03e_1` | 2023/05/26 (Fri) 19:41 |  |
+| 11 | `sharegpt_BsQhkZL_11` | 2023/05/20 (Sat) 01:34 |  |
+| 12 | `75b61326` | 2023/05/22 (Mon) 21:24 |  |
+| 13 | `dd25eeb5_4` | 2023/05/22 (Mon) 21:54 |  |
+| 14 | `147ab7e9_6` | 2023/05/28 (Sun) 09:19 |  |
+| 15 | `4c08398b_1` | 2023/05/22 (Mon) 04:26 |  |
+| 16 | `ultrachat_61361` | 2023/05/21 (Sun) 20:52 |  |
+| 17 | `502b6b52_4` | 2023/05/29 (Mon) 13:09 |  |
+| 18 | `d8e33f5c_abs_2` | 2023/05/25 (Thu) 10:46 |  |
+| 19 | `59a6150d_4` | 2023/05/28 (Sun) 21:04 |  |
+| 20 | `dc3f4850` | 2023/05/29 (Mon) 09:56 |  |
+| 21 | `sharegpt_gKz9Tg1_0` | 2023/05/26 (Fri) 01:43 |  |
+| 22 | `74c2d3a1_1` | 2023/05/24 (Wed) 04:04 |  |
+| 23 | `7c08d74b_1` | 2023/05/27 (Sat) 09:32 |  |
+| 24 | `5273d4b8` | 2023/05/21 (Sun) 09:51 |  |
+| 25 | `ultrachat_428073` | 2023/05/21 (Sun) 22:07 |  |
+| 26 | `9863a1c8_3` | 2023/05/28 (Sun) 14:10 |  |
+| 27 | `e307e277_3` | 2023/05/22 (Mon) 11:15 |  |
+| 28 | `295645f5_1` | 2023/05/22 (Mon) 03:32 |  |
+| 29 | `3aa868c7_1` | 2023/05/29 (Mon) 06:04 |  |
+| 30 | `67045503` | 2023/05/24 (Wed) 21:08 |  |
+| 31 | `21ef2d05_2` | 2023/05/25 (Thu) 17:41 |  |
+| 32 | `ultrachat_264003` | 2023/05/20 (Sat) 09:23 |  |
+
+**統計**: Top-50 中有 2 個 evidence sessions
+
+#### Session 模型輸出
+
+**狀態**: ❌ 錯誤
+
+```
+To answer the question, I will follow these steps:
+
+**Step 1: Extract relevant information**
+
+From Session 20, I see that the user mentioned playing swimming competitively in college.
+
+From Session 22, I see that the user also mentioned playing soccer and tennis competitively in the past.
+
+There is no other mention of competitive sports played by the user in the chat history.
+
+**Step 2: Reason over the information**
+
+Since there are only two mentions of competitive sports played by the user (swimming, soccer, and tennis), I will count them as separate instances. Therefore, the answer to the question "How many sports have I played competitively in the past?" is:
+
+3 sports
+
+Note that swimming, soccer, and tennis are three different sports, so they should be counted separately.
+```
+
+---
+
