@@ -2,20 +2,20 @@
 
 本報告包含所有 **RAG+UF+CoN Turn 答錯但 RAG+UF+CoN Session 答對** 的案例。
 
-**重要前提**：本報告只包含 Turn 和 Session 兩種配置**都檢索到 evidence** 的案例，以排除檢索失敗造成的錯誤。
+**重要前提**：本報告只包含 Turn 和 Session 兩種配置**都檢索到 evidence** 的案例（Recall All@50 = 1.0，即所有相關文檔都在 Top-50 中），以排除檢索失敗造成的錯誤。
 
 ## 統計摘要
 
 | 問題類型 | Turn✗Session✓題數 | 該類型總題數（兩者都檢索到 evidence） | 成功比例 |
 |---------|-----------------|--------------------------------|---------|
 | **knowledge-update** | 9 | 72 | 12.5% |
-| **multi-session** | 31 | 125 | 24.8% |
+| **multi-session** | 31 | 124 | 25.0% |
 | **single-session-assistant** | 1 | 3 | 33.3% |
-| **single-session-preference** | 1 | 28 | 3.6% |
+| **single-session-preference** | 1 | 30 | 3.3% |
 | **single-session-user** | 5 | 64 | 7.8% |
-| **temporal-reasoning** | 19 | 131 | 14.5% |
+| **temporal-reasoning** | 19 | 129 | 14.7% |
 
-**總計**: 66 / 423 題 (15.6%)
+**總計**: 66 / 422 題 (15.6%)
 
 ---
 
@@ -48,8 +48,8 @@ answer_02e66dec_1, answer_02e66dec_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -147,8 +147,8 @@ answer_766ab8da_1, answer_766ab8da_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -241,8 +241,8 @@ answer_4dac77cb_1, answer_4dac77cb_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -340,8 +340,8 @@ answer_bcce0b73_1, answer_bcce0b73_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -437,8 +437,8 @@ answer_f2f998c7_1, answer_f2f998c7_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -521,8 +521,8 @@ answer_25df025b_1, answer_25df025b_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -618,8 +618,8 @@ answer_5126c02d_1, answer_5126c02d_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -707,8 +707,8 @@ answer_cd345582_1, answer_cd345582_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -808,8 +808,8 @@ answer_4a97ae40_1, answer_4a97ae40_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -913,8 +913,8 @@ answer_56d02cab_3, answer_56d02cab_4, answer_56d02cab_2, answer_56d02cab_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1029,8 +1029,8 @@ answer_8858d9dc_3, answer_8858d9dc_1, answer_8858d9dc_4, answer_8858d9dc_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1149,8 +1149,8 @@ answer_733e443a_3, answer_733e443a_4, answer_733e443a_2, answer_733e443a_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1260,8 +1260,8 @@ answer_990c8992_2, answer_990c8992_1, answer_990c8992_3
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1374,8 +1374,8 @@ answer_a21f3697_1, answer_a21f3697_2, answer_a21f3697_3
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1473,8 +1473,8 @@ answer_203bf3fa_1, answer_203bf3fa_3, answer_203bf3fa_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1576,8 +1576,8 @@ answer_2504635e_3, answer_2504635e_2, answer_2504635e_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1690,8 +1690,8 @@ answer_3e5fea0e_1, answer_3e5fea0e_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1807,8 +1807,8 @@ answer_fcff2dc4_2, answer_fcff2dc4_1, answer_fcff2dc4_3
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -1916,8 +1916,8 @@ answer_4cef8a3c_3, answer_4cef8a3c_1, answer_4cef8a3c_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2023,8 +2023,8 @@ answer_728deb4d_5, answer_728deb4d_2, answer_728deb4d_3, answer_728deb4d_1, answ
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2150,8 +2150,8 @@ answer_6350aa4f_1, answer_6350aa4f_2, answer_6350aa4f_3, answer_6350aa4f_4
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2282,8 +2282,8 @@ answer_23759615_2, answer_23759615_3, answer_23759615_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2405,8 +2405,8 @@ answer_5237bb0b_2, answer_5237bb0b_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2504,8 +2504,8 @@ answer_bf633415_2, answer_bf633415_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2592,8 +2592,8 @@ answer_353d3c6d_2, answer_353d3c6d_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2694,8 +2694,8 @@ answer_4eb6d671_2, answer_4eb6d671_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2784,8 +2784,8 @@ answer_c8cc60d6_2, answer_c8cc60d6_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2877,8 +2877,8 @@ answer_419d21d5_2, answer_419d21d5_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -2978,8 +2978,8 @@ answer_35e36341_1, answer_35e36341_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3071,8 +3071,8 @@ answer_1bb63ea5_2, answer_1bb63ea5_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3179,8 +3179,8 @@ answer_dc5e537d_1, answer_dc5e537d_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3276,8 +3276,8 @@ answer_87e3a1cb_1, answer_87e3a1cb_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3367,8 +3367,8 @@ answer_92147866_1, answer_92147866_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3476,8 +3476,8 @@ answer_23f3a657_2, answer_23f3a657_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3578,8 +3578,8 @@ answer_16ece55f_2, answer_16ece55f_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3695,8 +3695,8 @@ answer_47152166_2, answer_47152166_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3812,8 +3812,8 @@ answer_cfcf5340_1, answer_cfcf5340_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -3911,8 +3911,8 @@ answer_e2278b24_1, answer_e2278b24_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4028,8 +4028,8 @@ answer_477ae455_1, answer_477ae455_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4125,8 +4125,8 @@ answer_fc81d1a2_1, answer_fc81d1a2_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4228,8 +4228,8 @@ answer_sharegpt_hChsWOp_97
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4327,8 +4327,8 @@ answer_8ee04a2e
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4433,8 +4433,8 @@ answer_40a90d51
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4523,8 +4523,8 @@ answer_235eb6fb
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4614,8 +4614,8 @@ answer_82a04f59
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4705,8 +4705,8 @@ answer_57fc1954
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4797,8 +4797,8 @@ answer_304511ce
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -4883,8 +4883,8 @@ answer_4bfcc250_4, answer_4bfcc250_3, answer_4bfcc250_2, answer_4bfcc250_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5003,8 +5003,8 @@ answer_e6c20e52_3, answer_e6c20e52_2, answer_e6c20e52_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5117,8 +5117,8 @@ answer_8c64ce25_2, answer_8c64ce25_1, answer_8c64ce25_3
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5237,8 +5237,8 @@ answer_0dd54b7c_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5329,8 +5329,8 @@ answer_184c8f56_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5440,8 +5440,8 @@ answer_550bb2d1_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5531,8 +5531,8 @@ answer_c9d35c00_1, answer_c9d35c00_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5622,8 +5622,8 @@ answer_8c64ce26_2, answer_8c64ce26_1, answer_8c64ce26_3
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5721,8 +5721,8 @@ answer_0b4a8adc_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5824,8 +5824,8 @@ answer_e28c1f0e_1, answer_e28c1f0e_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -5910,8 +5910,8 @@ answer_dba89488_2, answer_dba89488_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -6018,8 +6018,8 @@ answer_4bebc783_1, answer_4bebc783_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -6114,8 +6114,8 @@ answer_f4ea84fc_3, answer_f4ea84fc_2, answer_f4ea84fc_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -6218,8 +6218,8 @@ answer_5328c3c2_2, answer_5328c3c2_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -6322,8 +6322,8 @@ answer_7a4a93f1_2, answer_7a4a93f1_1
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -6417,8 +6417,8 @@ answer_b3763b6b_1, answer_b3763b6b_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -6517,8 +6517,8 @@ answer_8464304d_1, answer_8464304d_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -6612,8 +6612,8 @@ answer_544fe66c_2, answer_544fe66c_1, answer_544fe66c_3
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
@@ -6698,8 +6698,8 @@ answer_b10f3828_1, answer_b10f3828_2
 
 #### 檢索信息
 
-- **Turn 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
-- **Session 檢索**: Recall Any@50 = 0.00 ✅ 有檢索到 evidence
+- **Turn 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
+- **Session 檢索**: Recall Any@50 = 1.00, Recall All@50 = 1.00 ✅ 有檢索到 evidence
 
 #### RAG+UF+CoN Turn 結果
 
